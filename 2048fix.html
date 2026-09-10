@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="2048.css">
+        <style>
+        #choices span { border:1px dashed #e0e0e0;}    
+        span.selected { 
+          border:1px dashed black;
+          background: #e0e0e0; 
+          }    
+        </style>
+        <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+          }
+        }
+        </script>
+    </head>
+    <body>
+        <div id="pic"></div>
+        <div id="info">
+            2048 variants          
+            <div id="controls">
+                <button id="go">go</button>
+                <div class="group">
+                    <label>x</label>
+                    <button id="a1">a</button>
+                    <button id="a1n">d</button>
+                </div>
+                <div class="group">
+                    <label>y</label>
+                    <button id="a2">w</button>
+                    <button id="a2n">s</button>
+                </div>
+                <div class="group">
+                    <label>z</label>
+                    <button id="a3">r</button>
+                    <button id="a3n">e</button>
+                </div>
+                 <div  id="choices" class="group">
+                </div>
+            </div>
+            <div id="map" style="display:none"></div>
+        </div>
+        <script type="module">
+            import * as THREE from 'three';
+            import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+            import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+
+            window.THREE = THREE;
+            THREE.TrackballControls = TrackballControls;
+            THREE.CSS3DRenderer = CSS3DRenderer;
+            THREE.CSS3DObject = CSS3DObject;
+
+            await new Promise(resolve => {
+                const s = document.createElement('script');
+                s.src = '2048.js';
+                s.onload = resolve;
+                document.head.appendChild(s);
+            });
+
+            var sets = [];
+
+            var powers = [];
+            var value = 1;
+            var stvalue = "1";
+            for (var i = 0; i < 11; i++) {
+                powers.push([value, "2<sup>" + (i) + "</sup>", "<span>" + stvalue +
+                    "<sub>2</sub></span>"
+                ]);
+                value *= 2;
+                stvalue = stvalue + "0";
+            }
+
+            sets.push({"name":"powers of 2","data":powers});
+            var metric = [
+            ["1 m"],
+            ["10 m", "1 c", "0.01 "],
+            ["100 m", "10 c", "0.1 "],
+            ["1000 m", "100 c", "1 "],
+            ["1000 c", "10 ", "0.01 k"],
+            ["10000 c", "100 ", "0.1 k"],
+            ["1000 ", "1 k"],
+            ["10000 ", "10 k"]
+            ];
+
+            var units = [["meters", "m"], ["grams", "g"], ["liters", "l"]];
+            for (var k = 0; k < units.length; k++) {
+                var unit = units[k][1];
+                var met = [];
+                for (var i = 0; i < metric.length; i++) {
+                    met.push([])
+                    for (var j = 0; j < metric[i].length; j++) {
+                        met[i].push( "<span>" + metric[i][j] + unit + "</span>");
+                    }
+                }
+                sets.push({"name":units[k][0],"data":met});
+            }
+
+            for (var i = 0; i < sets.length; i++) {
+                document.getElementById("choices").innerHTML += '<span num="'+i+'" value="'+sets[i]["name"]+ '" '+((i==0)?"class='selected'":"")+">"+sets[i]["name"]+"</span> ";
+            }
+
+            var spans = document.querySelectorAll("#choices span");
+            spans.forEach(function(span) {
+                span.addEventListener("click", function() {
+                    spans.forEach(function(s) { s.classList.remove("selected"); });
+                    this.classList.add("selected");
+                    var num = parseInt(this.getAttribute("num"));
+                    data = sets[num]["data"];
+                    rerestart();
+                });
+            });
+        </script>
+    </body>
+</html>
