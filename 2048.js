@@ -427,7 +427,7 @@ function createBoxWithRoundedEdges(width, height, depth, radius0, smoothness) {
     shape.absarc(eps, height - radius * 2, eps, Math.PI, Math.PI / 2, true);
     shape.absarc(width - radius * 2, height - radius * 2, eps, Math.PI / 2, 0, true);
     shape.absarc(width - radius * 2, eps, eps, 0, -Math.PI / 2, true);
-    let geometry = new THREE.ExtrudeBufferGeometry(shape,{
+    let geometry = new THREE.ExtrudeGeometry(shape,{
         amount: depth - radius0 * 2,
         bevelEnabled: true,
         bevelSegments: smoothness * 2,

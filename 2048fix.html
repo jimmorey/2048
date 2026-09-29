@@ -51,10 +51,11 @@
             import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
             import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
 
-            window.THREE = THREE;
-            THREE.TrackballControls = TrackballControls;
-            THREE.CSS3DRenderer = CSS3DRenderer;
-            THREE.CSS3DObject = CSS3DObject;
+            globalThis.THREE = Object.assign({}, THREE, {
+                TrackballControls,
+                CSS3DRenderer,
+                CSS3DObject
+            });
 
             await new Promise(resolve => {
                 const s = document.createElement('script');
