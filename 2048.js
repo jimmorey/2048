@@ -295,13 +295,10 @@ function init(doc) {
     renderer.setSize(picSizeW, picSizeH);
     textureLoader = new THREE.TextureLoader();
     texture1 = textureLoader.load("images/colour.jpg");
-    texture1.repeat.set(.010, .010);
-    texture1.wrapS = THREE.RepeatWrapping;
-    texture1.wrapT = THREE.RepeatWrapping;
 
     material1 = new THREE.MeshBasicMaterial({
         color: 0xaaaa88,
-        opacity: 0.05
+        opacity: 0.5
     });
 
     picEl.appendChild(renderer.domElement);
@@ -366,7 +363,7 @@ function createBoard(board) {
             //var cube = new THREE.Mesh(geometryC, materialC);
             //var geo = new THREE.EdgesGeometry(geometryC);
             //var wirefram = new THREE.LineSegments(geo, matC);
-            var geo = createBoxWithRoundedEdges(90, 90, 90, 15, 10);
+            var geo = boxUV(createBoxWithRoundedEdges(90, 90, 90, 15, 10));
             //var wirefram = new THREE.LineSegments(geo, materialC);
             //var materialb = new THREE.MeshLambertMaterial( { color: 0xb00000, wireframe: false } );
 
@@ -388,9 +385,9 @@ function createBoard(board) {
     scene.add(ambientLight);
 
     var lights = [];
-    lights[0] = new THREE.PointLight(0xffffff,1,0);
-    lights[1] = new THREE.PointLight(0xffffff,1,0);
-    lights[2] = new THREE.PointLight(0xffffff,1,0);
+    lights[0] = new THREE.PointLight(0xffffff,250000,0);
+    lights[1] = new THREE.PointLight(0xffffff,250000,0);
+    lights[2] = new THREE.PointLight(0xffffff,250000,0);
 
     lights[0].position.set(0, 400, 0);
     lights[1].position.set(300, 500, 300);
@@ -408,7 +405,7 @@ function animate() {
         scene.background = new THREE.Color(0xffa0a0);
     renderer.render(scene, camera);
     var qq = camera.quaternion.clone();
-        camera.position.set(250, 250+Math.floor(20*Math.cos((new Date().getTime())/1000)), 650);
+    camera.position.set(250, 250+Math.floor(20*Math.cos((new Date().getTime())/1000)), 650);
 
     var ch = scene2.children;
     for (var i = 0; i < ch.length; i++) {
@@ -440,6 +437,24 @@ function createBoxWithRoundedEdges(width, height, depth, radius0, smoothness) {
     geometry.center();
 
     return geometry;
+}
+
+function boxUV(geo) {
+    geo.computeBoundingBox();
+    var pos = geo.attributes.position, nor = geo.attributes.normal, uv = geo.attributes.uv;
+    var mn = [geo.boundingBox.min.x, geo.boundingBox.min.y, geo.boundingBox.min.z];
+    var ex = [geo.boundingBox.max.x - mn[0], geo.boundingBox.max.y - mn[1], geo.boundingBox.max.z - mn[2]];
+    var p = [0, 0, 0], n = [0, 0, 0], ua, va;
+    for (var i = 0; i < pos.count; i++) {
+        p[0] = pos.getX(i); p[1] = pos.getY(i); p[2] = pos.getZ(i);
+        n[0] = Math.abs(nor.getX(i)); n[1] = Math.abs(nor.getY(i)); n[2] = Math.abs(nor.getZ(i));
+        if (n[0] >= n[1] && n[0] >= n[2]) { ua = 2; va = 1; }
+        else if (n[1] >= n[2]) { ua = 0; va = 2; }
+        else { ua = 0; va = 1; }
+        uv.setXY(i, (p[ua] - mn[ua]) / ex[ua], (p[va] - mn[va]) / ex[va]);
+    }
+    uv.needsUpdate = true;
+    return geo;
 }
 
 // memory issues

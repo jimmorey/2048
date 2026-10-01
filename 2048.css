@@ -1,67 +1,77 @@
 body {
-                background-color: #ffffff;
-                margin: 0;
-                overflow: hidden;
-            }
+    background-color: #ffffff;
+    margin: 0;
+    overflow: hidden;
+}
+#controls {
+    position: absolute;
+    top: 90vh;
+    width: 100%;
+    color: #000000;
+    /*padding: 5px; */
+    font-family: Monospace;
+    font-size: 18px;
+    text-align: center;
+    z-index: 1;
+}
+#info {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    color: #000000;
+    /*padding: 5px; */
+    font-family: Monospace;
+    font-size: 18px;
+    text-align: center;
+    z-index: 1;
+}
 
-            #info {
-                position: absolute;
-                top: 0px;
-                width: 100%;
-                color: #000000;
-                /*padding: 5px; */
-                font-family: Monospace;
-                font-size: 18px;
-                text-align: center;
-                z-index: 1;
-            }
+.details {
+    /*background: rgba(255,255,255,0.5); */
+    width: 100%;
+    text-align: center;
+    opacity: 45%;
+    /*margin-left: 10%; */
+}
 
-            .details {
-                /*background: rgba(255,255,255,0.5); */
-                width: 100%;
-                text-align: center;
-                opacity: 45%;
-                /*margin-left: 10%; */
-            }
+div.el {
+    color:black;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    /*border: 1px dashed red; */
+    /* border-radius: 50 */
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    /*background: rgba(255,255,255,0.35); */
+}
 
-            div.el {
-                color:black;
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                /*border: 1px dashed red; */
-               /* border-radius: 50 */
-                width: 90px;
-                height: 90px;
-                display: flex;
-                align-items: center;
-                /*background: rgba(255,255,255,0.35); */
-            }
+#pic {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    /* this fails if width and height are the sameish */
+}
 
-            #pic {
-                position: relative;
-                width: 100vw;
-                height: 100vh;
-                /* this fails if width and height are the sameish */
-            }
+div.group {
+    display: inline-block;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 3px;
+    background: rgba(255,255,255,0.6);
+}
 
-            div.group {
-                display: inline-block;
-                border: 1px solid #cccccc;
-                border-radius: 10px;
-                padding: 10px;
-                margin: 3px;
-                background: rgba(255,255,255,0.6);
-            }
+h3 sup {
+    font-size: 65%
+}
 
-            h3 sup {
-                font-size: 65%
-            }
+h3 span {
+    font-size: 70%;
+}
 
-            h3 span {
-                font-size: 70%;
-            }
-
-            h3 span sub {
-                font-size: 65%;
-            }
+h3 span sub {
+    font-size: 65%;
+}
